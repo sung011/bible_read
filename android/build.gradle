@@ -1,0 +1,59 @@
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+// --- AGP 8+ namespace 호환 패치 ---
+// 일부 플러그인(예: isar_flutter_libs)이 android { namespace }를 선언하지 않으면
+// AGP 8.x에서 "Namespace not specified"로 빌드가 실패합니다.
+//
+// 이 블록은 pub-cache(플러그인 소스)를 직접 수정하지 않고,
+// 각 Android 라이브러리/앱 모듈의 AndroidManifest.xml에 있는 package 값을 읽어서
+// namespace를 자동으로 주입하는 방식의 워크어라운드입니다.
+def _injectNamespaceIfMissing = { Project p ->
+    def androidExt = p.extensions.findByName("android")
+    if (androidExt == null) return
+    if (!androidExt.hasProperty("namespace")) return
+
+    // 이미 namespace가 있으면 건드리지 않음
+    def ns = androidExt.namespace
+    if (ns != null && ns.toString().trim().length() > 0) return
+
+    def manifestFile = p.file("src/main/AndroidManifest.xml")
+    if (!manifestFile.exists()) return
+
+    def text = manifestFile.getText("UTF-8")
+    def m = (text =~ /package="([^"]+)"/)
+    if (m.find()) {
+        def pkg = m.group(1)
+        if (pkg != null && pkg.toString().trim().length() > 0) {
+            androidExt.namespace = pkg
+            println("Injected missing namespace for ${p.name}: ${pkg}")
+        }
+    }
+}
+
+subprojects { project ->
+    // afterEvaluate를 쓰면 evaluationDependsOn 때문에 "already evaluated" 에러가 날 수 있어,
+    // 플러그인 적용 시점에 바로 주입합니다.
+    project.plugins.withId("com.android.library") {
+        _injectNamespaceIfMissing(project)
+    }
+    project.plugins.withId("com.android.application") {
+        _injectNamespaceIfMissing(project)
+    }
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
