@@ -1,0 +1,37 @@
+{
+  "channel": {
+    "total": 2,
+    "num": 50,
+    "title": "표준 국어 대사전 개발 지원(Open API) - 사전  검색",
+    "start": 1,
+    "description": "표준 국어 대사전 개발 지원(Open API) – 사전 검색 결과",
+    "item": [
+      {
+        "sup_no": "1",
+        "origin": "混沌/渾沌",
+        "word": "혼돈",
+        "target_code": "374712",
+        "sense": {
+          "definition": "마구 뒤섞여 있어 갈피를 잡을 수 없음. 또는 그런 상태.",
+          "link": "https://stdict.korean.go.kr/search/searchView.do?word_no=374712&searchKeywordTo=3",
+          "type": "일반어"
+        },
+        "pos": "명사"
+      },
+      {
+        "sup_no": "2",
+        "origin": "餛飩",
+        "word": "혼돈",
+        "target_code": "374725",
+        "sense": {
+          "definition": "밀가루나 쌀가루 반죽을 둥글게 빚어 그 속에 소를 넣어 찐 떡.",
+          "link": "https://stdict.korean.go.kr/search/searchView.do?word_no=374725&searchKeywordTo=3",
+          "type": "일반어"
+        },
+        "pos": "명사"
+      }
+    ],
+    "link": "https://stdict.korean.go.kr",
+    "lastbuilddate": "20260220004712"
+  }
+}
