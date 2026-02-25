@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:bible_read/like/like_store.dart';
 import 'package:bible_read/model/like_verse_item.dart';
@@ -65,9 +66,10 @@ class LikeScriptureController extends GetxController {
       } else {
         await _store.upsert(item);
       }
-    } catch (e) {
+    } catch (e, st) {
       // 실패 시 롤백
-      Get.log('LikeScriptureController store error: $e');
+      debugPrint('LikeScriptureController store error: $e');
+      debugPrint('$st');
       if (wasLiked) {
         _likedKeys.add(key);
         likedVerses.insert(0, item);

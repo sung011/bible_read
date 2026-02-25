@@ -52,8 +52,8 @@ class _AppWrapperState extends State<_AppWrapper> {
   Future<void> _initAfterFirstFrame() async {
     if (!mounted) return;
     try {
-      // 인트로 시간 최소화: await 없이 메인을 먼저 띄우고, 나머지는 백그라운드
-      GetStorage.init(); // 완료를 기다리지 않음 (TodayController에서 필요 시 대기)
+      // 좋아요/저장(GetStorage) 사용 전 반드시 초기화 완료 대기
+      await GetStorage.init();
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,

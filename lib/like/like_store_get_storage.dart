@@ -3,7 +3,7 @@ import 'package:get_storage/get_storage.dart';
 
 import 'like_store_base.dart';
 
-/// Web(또는 Isar를 못 쓰는 플랫폼)에서는 GetStorage fallback.
+/// Web/모바일: GetStorage로 좋아요 저장.
 class GetStorageLikeStore implements LikeStore {
   static const String _key = 'liked_verses';
   final GetStorage _storage = GetStorage();

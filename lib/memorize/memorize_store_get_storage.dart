@@ -3,7 +3,7 @@ import 'package:get_storage/get_storage.dart';
 
 import 'memorize_store_base.dart';
 
-// Web(또는 Isar를 못 쓰는 플랫폼)에서는 GetStorage로 fallback 합니다.
+// Web/모바일: GetStorage로 암송(저장) 데이터 저장.
 // - 데이터 구조는 기존 legacy 키와 동일하게 유지해서 호환됩니다.
 class GetStorageMemorizeStore implements MemorizeStore {
   static const String _key = 'memorize_verses';
@@ -49,6 +49,5 @@ class GetStorageMemorizeStore implements MemorizeStore {
   }
 }
 
-@override
 MemorizeStore createMemorizeStore() => GetStorageMemorizeStore();
 

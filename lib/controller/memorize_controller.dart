@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import 'package:bible_read/memorize/memorize_store.dart';
@@ -60,9 +61,10 @@ class MemorizeController extends GetxController {
       } else {
         await _store.upsert(item);
       }
-    } catch (e) {
+    } catch (e, st) {
       // 저장 실패 시 UI 롤백
-      Get.log('MemorizeController store error: $e');
+      debugPrint('MemorizeController store error: $e');
+      debugPrint('$st');
       if (wasSelected) {
         _selectedKeys.add(key);
         if (removedItem != null) {
