@@ -20,7 +20,7 @@ class AdMobServiceImpl implements IAdMobService {
     }
     if (Platform.isIOS) {
       if (kReleaseMode) {
-        return 'ca-app-pub-4141290006816152/3504987234';
+        return 'ca-app-pub-4141290006816152/7747592379';
       }
       return 'ca-app-pub-3940256099942544/2934735716';
     }
