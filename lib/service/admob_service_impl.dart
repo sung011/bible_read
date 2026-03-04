@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bible_read/service/admob_service_interface.dart';
@@ -5,11 +6,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-/// Android / iOS 실제 AdMob 배너 구현
+/// Android / iOS 실제 AdMob 배너 구현 (1분마다 새 광고 로드)
 class AdMobServiceImpl implements IAdMobService {
   BannerAd? _bannerAd;
   bool _isLoading = false;
   void Function()? _onLoaded;
+  Timer? _refreshTimer;
+  static const Duration _refreshInterval = Duration(seconds: 30);
 
   static String get _bannerAdUnitId {
     if (Platform.isAndroid) {
@@ -55,6 +58,7 @@ class AdMobServiceImpl implements IAdMobService {
         onAdLoaded: (_) {
           _isLoading = false;
           _onLoaded?.call();
+          _scheduleRefresh();
         },
         onAdFailedToLoad: (ad, error) {
           _isLoading = false;
@@ -65,8 +69,21 @@ class AdMobServiceImpl implements IAdMobService {
     )..load();
   }
 
+  void _scheduleRefresh() {
+    _refreshTimer?.cancel();
+    _refreshTimer = Timer(_refreshInterval, () {
+      _refreshTimer = null;
+      _bannerAd?.dispose();
+      _bannerAd = null;
+      _isLoading = false;
+      loadBannerAd(onLoaded: _onLoaded);
+    });
+  }
+
   @override
   void dispose() {
+    _refreshTimer?.cancel();
+    _refreshTimer = null;
     _bannerAd?.dispose();
     _bannerAd = null;
     _isLoading = false;

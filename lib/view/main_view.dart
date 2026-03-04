@@ -13,6 +13,7 @@ class MainView extends GetView<MainController> {
     return Scaffold(
       backgroundColor: const Color(0xFF272C25),
       appBar: AppBar(
+        backgroundColor: const Color(0xFF272C25),
         title: Obx(() {
           controller.bannerVersion.value;
           return controller.adMobService.bannerWidget ?? const SizedBox.shrink();
