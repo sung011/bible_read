@@ -28,7 +28,9 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 flutter_ios_podfile_setup
 
 target 'Runner' do
-  use_frameworks!
+  # google_mobile_ads(Google-Mobile-Ads-SDK)는 정적 링크가 필요한 경우가 많습니다.
+  # 그렇지 않으면 Xcode에서 "Framework 'GoogleMobileAds' not found" 링크 오류가 날 수 있습니다.
+  use_frameworks! :linkage => :static
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))

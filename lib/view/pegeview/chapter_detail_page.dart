@@ -117,6 +117,22 @@ class ChapterDetailPage extends GetView<ChapterDetailController> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
+                                      tooltip: '성구 복사',
+                                      onPressed: () {
+                                        controller.copyVerseToClipboard(
+                                          verseNum,
+                                          (verse['content'] ?? '').toString(),
+                                        );
+                                      },
+                                      icon: const Icon(
+                                        Icons.copy_outlined,
+                                        size: 18,
+                                        color: Colors.black54,
+                                      ),
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(),
+                                    ),
+                                    IconButton(
                                       onPressed: () {
                                         controller.showVerseModal(verse);
                                       },

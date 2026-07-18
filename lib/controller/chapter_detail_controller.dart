@@ -747,6 +747,19 @@ class ChapterDetailController extends GetxController {
     });
   }
 
+  /// 성구(절 번호 + 본문)를 클립보드에 복사합니다.
+  void copyVerseToClipboard(int verseNum, String content) {
+    final ref = '$book $chapter:$verseNum';
+    final body = content.trim();
+    Clipboard.setData(ClipboardData(text: '$ref\n$body'));
+    Get.snackbar(
+      '복사됨',
+      '성구가 클립보드에 복사되었습니다.',
+      snackPosition: SnackPosition.BOTTOM,
+      duration: const Duration(seconds: 2),
+    );
+  }
+
   // 구절 모달 표시
   void showVerseModal(Map<String, dynamic> verse) {
     // 선택된 버튼 인덱스 (0: 마이크, 1: 듣기, 2: 좋아요, -1: 선택 없음)
@@ -800,13 +813,25 @@ class ChapterDetailController extends GetxController {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '$book $chapter:${verse['verse']}',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: practiceController.jadeGreen,
+                        Expanded(
+                          child: Text(
+                            '$book $chapter:${verse['verse']}',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: practiceController.jadeGreen,
+                            ),
                           ),
+                        ),
+                        IconButton(
+                          tooltip: '성구 복사',
+                          onPressed: () {
+                            copyVerseToClipboard(
+                              verse['verse'] as int,
+                              (verse['content'] ?? '').toString(),
+                            );
+                          },
+                          icon: const Icon(Icons.copy_outlined),
                         ),
                         IconButton(
                           onPressed: () => Get.back(),
